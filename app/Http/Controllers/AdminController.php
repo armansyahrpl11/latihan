@@ -2,13 +2,15 @@
 
 namespace App\Http\Controllers;
 
-use Illuminate\Support\Facades\DB;
-
 use App\Models\Pengaduan;
+use App\Models\User;
 
-// use Barryvdh\DomPDF\PDF;
 use Barryvdh\DomPDF\Facade as PDF;
 
+// use Barryvdh\DomPDF\PDF;
+use Illuminate\Support\Facades\DB;
+use Illuminate\Http\Request;
+use App\Models\Tanggapan;
 
 class AdminController extends Controller
 {
@@ -37,12 +39,12 @@ class AdminController extends Controller
         ]);
     }
 
-    public function laporan() {
+    public function laporan(Request $request) {
 
         $pengaduan = Pengaduan::all();
-
         return view('pages.admin.laporan',[
-            'pengaduan' => $pengaduan
+            'pengaduan' => $pengaduan,
+
         ]);
     }
 
@@ -54,6 +56,42 @@ class AdminController extends Controller
             'pengaduan' => $pengaduan
         ]);
         return $pdf->download('laporan.pdf');
+    }
+
+    public function getLaporan(Request $request, )
+    {
+        // dd($request);
+
+        $from = $request->from . ' ' ;
+        $to = $request->to . ' ' ;
+
+        $pengaduan = Pengaduan::whereBetween('tgl_pengaduan', [$from, $to])->get();
+        // dd($pengaduan);
+
+        $nik = User::get();
+        $data = Pengaduan::all();
+
+        return view('pages.admin.laporan', [
+            'pengaduan' => $pengaduan,
+            'from' => $from,
+            'to' => $to,
+            'data'    => $data,
+            'nik'    => $nik
+
+        ]);
+    }
+    public function cetakLaporan($from, $to)
+    {
+        $pengaduan = Pengaduan::whereBetween('tgl_pengaduan', [$from, $to])->get();
+        $penga = Tanggapan::all();
+
+
+        $pdf = PDF::loadView('pages.admin.pengaduan.cetak', [
+            'pengaduan' => $pengaduan,
+            'penga' => $penga,
+
+            ])->setPaper('a4', 'landscape');
+        return $pdf->download('laporan-pengaduan.pdf');
     }
 
     public function pdf($id) {

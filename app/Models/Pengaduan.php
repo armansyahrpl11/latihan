@@ -50,4 +50,22 @@ class Pengaduan extends Model
     {
         return $this->belongsTo(Tanggapan::class, 'status_id','status');
     }
+
+        public function mas()
+    {
+        return $this->belongsTo(Masyarakat::class, 'nik_id');
+    }
+    public function us()
+    {   
+        return $this->belongsTo(User::class, 'nik_id');
+    }
+    public function tanga()
+    {
+        return $this->hasOne(User::class, 'nik_id');
+    }
+
+    // public function tanggapan()
+    // {
+    //     return $this->hasMany(Tanggapan::class);
+    // }
 }

@@ -25,28 +25,43 @@
 
     <div>
       <h6>Laporan Masyarakat Desa Ciherang Pondok</h6>
-      <h6>{{ $pengaduan->created_at->format('l, d F Y') }}</h6>
+      {{-- <h6>{{ $pengaduan->created_at->format('l, d F Y') }}</h6> --}}
     </div>
     <hr class="solid">
-
+{{--
     <div class="mt-3 mb-3">
       <h6>Nama : {{ $pengaduan->name }}</h6>
       <h6>NIK : {{ $pengaduan->user_nik }}</h6>
       <h6>No. Telepon : {{ $pengaduan->user->phone }}</h6>
-    </div>
+    </div> --}}
 
-    <table class="table table-bordered">
-      <thead class="thead">
+</div>
+<table class="table">
+    <thead>
         <tr>
-          <th scope="col">Laporan Pengaduan</th>
-          <th scope="col">Status</th>
+            <th>No</th>
+            <th>Tanggal Kejadian</th>
+            <th>Nama Pelapor</th>
+            <th>Isi Laporan</th>
+            <th>Tanggapan</th>
+            <th>Tanggal Tanggapan</th>
+            <th>Status</th>
         </tr>
-      </thead>
-      <tbody>
-        <td>{{ $pengaduan->description }}</td>
-        <td>{{ $pengaduan->status }}</td>
-      </tbody>
-    </table>
-  </div>
+    </thead>
+    <tbody>
+        @foreach ($penga as $k => $v)
+        <tr>
+            <td>{{ $k += 1 }}</td>
+            <td>{{ $v->pengaduan->tgl_pengaduan}}</td>
+            <td>{{ $v->pengaduan->user->name}}</td>
+            <td>{{ $v->pengaduan->description }}</td>
+            <td>{{ $v->tanggapan }} oleh {{ $v->user->name }} </td>
+            <td>{{ $v->created_at }}</td>
+            {{-- <td>{{ $v->created_at->format('d/m/Y')}}</td> --}}
+            <td>{{ $v->pengaduan->status }}</td>
+        </tr>
+        @endforeach
+    </tbody>
+</table>
 </body>
 </html>

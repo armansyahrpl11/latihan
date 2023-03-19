@@ -1,6 +1,7 @@
 <?php
 
 use Illuminate\Support\Facades\Route;
+use App\Http\Controllers\AdminController;
 
 Route::get('/', function () {
     return view('welcome');
@@ -20,8 +21,13 @@ Route::prefix('admin')
         Route::resource('petugas', 'PetugasController');
 
         Route::get('laporan', 'AdminController@laporan');
+
         Route::get('laporan/cetak', 'AdminController@cetak');
         Route::get('pengaduan/cetak/{id}', 'AdminController@pdf');
+
+        Route::post('getLaporan', 'AdminController@getLaporan')->name('laporan.getLaporan');;
+        Route::get('laporan/cetak/{from}/{to}', 'AdminController@cetakLaporan')->name('laporan.cetakLaporan');
+
 });
 
 

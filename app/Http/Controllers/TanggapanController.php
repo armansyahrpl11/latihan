@@ -68,9 +68,11 @@ class TanggapanController extends Controller
      */
     public function show($id)
     {
-        $item = Pengaduan::with([
-            'details', 'user'
-        ])->findOrFail($id);
+        // $item = Pengaduan::with([
+        //     'details', 'user'
+        // ])->findOrFail($id);
+
+        $item =Pengaduan::all()->findOrFail($id);
 
         return view('pages.admin.tanggapan.add',[
             'item' => $item
@@ -97,20 +99,72 @@ class TanggapanController extends Controller
      */
     public function update(Request $request, $id)
     {
-        DB::table('pengaduan')->where('id', $request->pengaduan_id)->update([
-            'status'=> $request->status,
+
+
+        $request->validate([
+            'tanggapan' => 'required',
         ]);
+        // dd($request);
+
+
+        $menu= Pengaduan::findOrFail($id);
+
+        // dd($menu);
 
         $petugas_id = Auth::user()->id;
 
-        $data = $request->all();
-        dd($data);
-        $data['pengaduan_id'] = $request->pengaduan_id;
-        $data['petugas_id']=$petugas_id;
+
+        // dd($menu);
+
+        $tanggapan = Tanggapan::where('pengaduan_id', $id)->first();
+
+        if ($tanggapan) {
+            $data = $tanggapan->update([
+                    'tanggapan' => $request->tanggapan,
+                    'pengaduan_id'  =>$id,
+                    'petugas_id'  =>$petugas_id,
+
+                ]);
+        }else{
+            $data = Tanggapan::create([
+                    'tanggapan' => $request->tanggapan,
+                    'pengaduan_id'  =>$id,
+                    'petugas_id'  =>$petugas_id,
+
+                ]);
+        }
+
+
+        // Tanggapan::updateOrInsert([
+        //     'tanggapan' => $request->tanggapan,
+        //     'pengaduan_id'  =>$id,
+        //     'petugas_id'  =>$petugas_id,
+
+        // ]);
+
+        $menu->update([
+            'status'=> $request->status,
+        ]);
 
         Alert::success('Berhasil', 'Pengaduan berhasil ditanggapi');
-        Tanggapan::create($data);
         return redirect('admin/pengaduans');
+
+
+
+        // DB::table('pengaduan')->where('id', $request->pengaduan_id)->update([
+        //     'status'=> $request->status,
+        // ]);
+
+        // $petugas_id = Auth::user()->id;
+
+        // $data = $request->all();
+        // dd($data);
+        // $data['pengaduan_id'] = $request->pengaduan_id;
+        // $data['petugas_id']=$petugas_id;
+
+        // Alert::success('Berhasil', 'Pengaduan berhasil ditanggapi');
+        // Tanggapan::create($data);
+        // return redirect('admin/pengaduans');
     }
 
     /**
@@ -121,6 +175,39 @@ class TanggapanController extends Controller
      */
     public function destroy($id)
     {
+
+    }
+
+    public function UpdateEUY(Request $request, $id)
+    {
+            $request->validate([
+                'tanggapan' => 'required',
+            ]);
+            // dd($request);
+
+
+            $menu= Pengaduan::findOrFail($id);
+
+            // dd($menu);
+
+            $petugas_id = Auth::user()->id;
+
+
+            // dd($menu);
+            Tanggapan::update([
+                'tanggapan' => $request->tanggapan,
+                'pengaduan_id'  =>$id,
+                'petugas_id'  =>$petugas_id,
+
+            ]);
+
+            $menu->update([
+                'status'=> $request->status,
+            ]);
+
+            Alert::success('Berhasil', 'Pengaduan berhasil ditanggapi');
+            return redirect('admin/pengaduans');
+
 
     }
 }

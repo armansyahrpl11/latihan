@@ -19,10 +19,10 @@ class Tanggapan extends Model
 
     ];
 
-    public function pengaduan()
-    {
-    	return $this->hasOne(Pengaduan::class,'id', 'id');
-    }
+    // public function pengaduan()
+    // {
+    // 	return $this->hasOne(Pengaduan::class,'id', 'id');
+    // }
 
     public function proses()
     {
@@ -32,5 +32,21 @@ class Tanggapan extends Model
     public function country()
     {
         return $this->hasOne(Pengaduan::class);
+    }
+
+    public function pengaduan()
+    {
+        return $this->belongsTo(Pengaduan::class, 'pengaduan_id');
+
+    }
+    public function petugas()
+    {
+        return $this->belongsTo(Petugas::class, 'petugas_id');
+
+    }
+
+    public function user()
+    {
+        return $this->belongsTo(User::class, 'petugas_id');
     }
 }
