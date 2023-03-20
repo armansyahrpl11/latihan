@@ -81,12 +81,30 @@ class MasyarakatController extends Controller
         $user = Auth::user()->nik;
 
 
-        $items = Pengaduan::all();
+        $items = Pengaduan::where('jenis_laporan', 'public')->get();
 
         return view('pages.masyarakat.detail', [
             'items' => $items
         ]);
 
+    }
+
+    public function getLaporan(Request $request, )
+    {
+        // dd($request);
+
+        $jenis_laporan = $request->jenis_laporan;
+
+        $items = Pengaduan::where('jenis_laporan', [$jenis_laporan])->get();
+        // dd($items);
+
+
+        // $items = Pengaduan::where('jenis_laporan', 'private')->get();
+
+
+        return view('pages.masyarakat.detail', [
+            'items' => $items
+        ]);
     }
 
     public function show($id)

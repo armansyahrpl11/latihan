@@ -11,6 +11,24 @@ Data Pengaduan
     </h2>
 
     <div class="w-full mb-8 overflow-hidden rounded-lg shadow-xs">
+
+        <form action="{{ route('laporan.user.getLaporan') }}" method="POST">
+            @csrf
+            <div class="px-4 py-3 mb-8 bg-white rounded-lg shadow-md dark:bg-gray-800">
+
+                <label class="block text-sm">
+                    <span class="text-gray-700 dark:text-gray-400">Jenis Laporan</span>
+                    <input
+                        class="block w-full mt-1 text-sm dark:text-gray-300 dark:border-gray-600 dark:bg-gray-700 form-textarea focus:border-blue-400 focus:outline-none focus:shadow-outline-red dark:focus:shadow-outline-gray"
+                        type="text" name="jenis_laporan" readonly value="private"></input>
+                </label>
+                <button type="submit"
+                    class="mt-4 px-4 py-2 text-sm font-medium leading-5 text-white transition-colors duration-150 bg-red-600 border border-transparent rounded-lg active:bg-red-600 hover:bg-red-700 focus:outline-none focus:shadow-outline-red">
+                    Cari Pengaduan
+                </button>
+            </div>
+        </form>
+
       <div class="w-full overflow-x-auto">
         @if ($errors->any())
         <div class="alert alert-danger">
@@ -74,7 +92,7 @@ Data Pengaduan
                     class="flex items-center justify-between  text-sm font-medium leading-5 text-white rounded-lg dark:text-white-400 focus:outline-none focus:shadow-outline-gray"
                     aria-label="Detail">
                     Lihat
-                    
+
                   </a>
 
                 </button>

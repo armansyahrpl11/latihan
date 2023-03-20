@@ -177,37 +177,4 @@ class TanggapanController extends Controller
     {
 
     }
-
-    public function UpdateEUY(Request $request, $id)
-    {
-            $request->validate([
-                'tanggapan' => 'required',
-            ]);
-            // dd($request);
-
-
-            $menu= Pengaduan::findOrFail($id);
-
-            // dd($menu);
-
-            $petugas_id = Auth::user()->id;
-
-
-            // dd($menu);
-            Tanggapan::update([
-                'tanggapan' => $request->tanggapan,
-                'pengaduan_id'  =>$id,
-                'petugas_id'  =>$petugas_id,
-
-            ]);
-
-            $menu->update([
-                'status'=> $request->status,
-            ]);
-
-            Alert::success('Berhasil', 'Pengaduan berhasil ditanggapi');
-            return redirect('admin/pengaduans');
-
-
-    }
 }
